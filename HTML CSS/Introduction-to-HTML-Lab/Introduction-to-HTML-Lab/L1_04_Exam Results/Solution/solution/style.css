@@ -1,0 +1,14 @@
+table, tr, td, th {
+    border: 1px solid #000000;
+}
+
+td {
+    padding-left: 5px;
+}
+
+.result {
+    width: 400px;
+    text-align: left;
+    padding-right: 5px;
+}
+
