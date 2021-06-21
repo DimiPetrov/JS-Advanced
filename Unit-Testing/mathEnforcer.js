@@ -22,15 +22,15 @@ let mathEnforcer = {
     }
 };
 
-describe('mathEnforcer', () => {
+describe('mathEnforcer', function()  {
 
-    describe('add', () => {
-        it('is not number', () => {
+    describe('add', function() {
+        it('is not number', function() {
             assert.isUndefined(mathEnforcer.addFive('a'));
             assert.isNaN(mathEnforcer.addFive(NaN));
         });
 
-        it('add properly', () => {
+        it('add properly', function() {
             assert.equal(mathEnforcer.addFive(0), 5);
             assert.equal(mathEnforcer.addFive(-5), 0);
             assert.equal(mathEnforcer.addFive(1.2), 6.2);
@@ -38,13 +38,13 @@ describe('mathEnforcer', () => {
         });
     });
 
-    describe('subtract', () => {
-        it('is not number', () => {
+    describe('subtract', function() {
+        it('is not number', function() {
             assert.isUndefined(mathEnforcer.subtractTen('a'));
             assert.isUndefined(mathEnforcer.subtractTen(undefined));
         });
 
-        it('subtract properly', () => {
+        it('subtract properly', function() {
             assert.equal(mathEnforcer.subtractTen(0), -10);
             assert.equal(mathEnforcer.subtractTen(-5), -15);
             assert.equal(mathEnforcer.subtractTen(10.2), 0.1999999999999993);
@@ -54,13 +54,13 @@ describe('mathEnforcer', () => {
         });
     });
 
-    describe('sum', () =>{
-        it('', () => {
+    describe('sum', function(){
+        it('', function() {
             assert.isUndefined(mathEnforcer.sum('1', 1));
             assert.isUndefined(mathEnforcer.sum(1, '1'));
         });
 
-        it('', () => {
+        it('', function() {
             assert.equal(mathEnforcer.sum(1, 1), 2);
             assert.equal(mathEnforcer.sum(1, -1), 0);
             assert.equal(mathEnforcer.sum(1, 0), 1);

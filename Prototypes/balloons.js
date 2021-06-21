@@ -41,7 +41,11 @@ function createBalloons() {
 const balloons = createBalloons();
 
 const party = new balloons.PartyBalloon('red', 10, 'yellow', 100);
-console.log(party.ribbon);
+console.log(party.color);
+
+const birthday = new balloons.BirthdayBalloon('red', 10, 'yellow', 100, 'asdasdasd');
+console.log(birthday.ribbon);
+console.log(birthday.text);
 
 // let classes = solution();
 // let testBalloon = new classes.Balloon(

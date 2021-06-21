@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const { iteratee } = require('lodash');
+console.log("Test");
 
 describe('RGBtoHEX', () => {
     it('converts black to hex', () => {

@@ -8,8 +8,5 @@
   },
   "author": "DP",
   "license": "ISC",
-  "dependencies": {
-    "chai": "^4.3.4",
-    "mocha": "^8.3.2"
-  }
+  "dependencies": {}
 }
