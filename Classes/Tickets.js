@@ -1,41 +1,37 @@
-function solve(arr, criteria) {
-    function splitLine(line) {
-        return line.split('|');
-    }
 
-    function convertToTicket(destination, price, status) {
-        return new Ticket(destination, Number(price), status);
-    }
-
-    // class Ticket {
-    //     constructor(destination, price, status) {
-    //         this.destination = destination;
-    //         this.price = price;
-    //         this.status = status;
-    //     }
-    // }
-
-    function Ticket(destination, price, status) {
-        return  {
-            destination, 
-            price, 
-            status
+function solve(ticketsArr, sortingCriteria) {
+    class Ticket {
+        constructor(destination, price, status) {
+            this.destination = destination;
+            this.price = price;
+            this.status = status;
+        }
+    
+        compareTo(other, criteria) {
+            if (typeof this[criteria] === 'string') {
+                return this[criteria].localeCompare(other[criteria]);
+            } else {
+                return this[criteria] - other[criteria];
+            }
         }
     }
 
-    const sortMapper = {
-        'destination': (a, b) => a.destination.localeCompare(b.destination),
-        'price': (a, b) => a.price - b.price,
-        'status': (a, b) => a.status.localeCompare(b.status)
-    };
+    let tickets = [];
 
-    return arr.map(splitLine)
-    .map(convertToTicket).sort(sortMapper[criteria]);
+    for (let i = 0; i < ticketsArr.length; i++) {
+        let [destination, price, status] = ticketsArr[i].split('|');
+        price = Number(price);
+        let ticket = new Ticket(destination, price, status);
+        tickets.push(ticket);
+    }
 
+    tickets.sort((a, b) => a.compareTo(b, sortingCriteria));
+    return tickets;
 }
 
 console.log(solve(['Philadelphia|94.20|available',
-    'New York City|95.99|available',
-    'New York City|95.99|sold',
-    'Boston|126.20|departed'],
+        'New York City|95.99|available',
+        'New York City|95.99|sold',
+        'Boston|126.20|departed'
+    ],
     'destination'));
