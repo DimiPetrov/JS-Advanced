@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>SoftUni Wizard</title>
+</head>
+<body>
+    <div class="game-view">
+        <div class="start-screen">Start Game</div>
+        <div class="play-screen hidden"></div>
+    </div>
+
+    <script src="gameState.js"></script>
+    <script src="gameFactory.js"></script>
+    <script>
+        let getState = gameStateFactory();
+        let state = getState();
+        let game = gameFactory();
+
+        game.startScreen.addEventListener('click', gameStart);
+
+        document.addEventListener('keydown', onKeyDown);
+        document.addEventListener('keyup', onKeyUp);
+
+        function gameStart() {
+            game.startScreen.classList.add('hidden');
+            game.playScreen.classList.remove('hidden');
+
+            window.requestAnimationFrame(gameLoop);
+        }
+
+        function gameLoop() {
+            let { wizard } = state;
+            let { wizardElement } = game;
+
+            if(state.keys.keyW) {
+                wizard.y -= wizard.speed;
+            }
+
+            if(state.keys.keyS) {
+                wizard.y += wizard.speed;
+            }
+
+            if(state.keys.keyA) {
+                wizard.x -= wizard.speed;
+            }
+
+            if(state.keys.keyD) {
+                wizard.x += wizard.speed;
+            }
+
+            wizardElement.style.top = wizard.y + 'px';
+            wizardElement.style.left = wizard.x + 'px';
+
+            if(!state.gameOver) {
+                window.requestAnimationFrame(gameLoop);
+            } else {
+                alert('Game Over');
+            }         
+        }
+
+        function onKeyDown(e) {
+            state.keys[e.code] = true;
+        }
+
+        function onKeyUp(e) {
+            state.keys[e.code] = false;
+        }
+    </script>
+</body>
+</html>
