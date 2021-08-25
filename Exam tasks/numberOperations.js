@@ -63,10 +63,10 @@ describe('numberOperations', function() {
         });
     });
 
-    describe('sumArrays', function() {
+);    describe('sumArrays', function() {
         it('Should return empty array when called with empty arrays', function() {
             assert.deepEqual(numberOperations.sumArrays([], []), []);
-        });
+        }
         it('Should return correct result when one parameter is an empty array', function() {
             assert.deepEqual(numberOperations.sumArrays([1, 2, 3], []), [1, 2, 3]);
         });
