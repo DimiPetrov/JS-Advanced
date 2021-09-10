@@ -1,3 +1,5 @@
+const { assert } = require("chai");
+
 class Story {
     constructor(title, creator) {
         this.title = title;
@@ -6,139 +8,127 @@ class Story {
         this._likes = [];
     }
 
-    get like() {
+    get likes() {
         if(this._likes.length === 0) {
             return `${this.title} has 0 likes`;
-        }
-
-        let username = this._likes[0];
-        if(this._likes.length === 1) {
+        } else if(this._likes.length === 1) {
+            let username = this._likes[0];
             return `${username} likes this story!`;
+        } else {
+            let username = this._likes[0];
+            return `${username} and ${this._likes.length - 1} others like this story!`;
         }
-
-        return `${username} and ${this._likes.length - 1} others like this story!`;
     }
 
     like(username) {
         if(this._likes.includes(username)) {
             throw new Error(`You can't like the same story twice!`);
-        }
-
+        } 
         if(username === this.creator) {
-            throw new Error( `You can't like your own story!`);
+            throw new Error(`You can't like your own story!`);
         }
-
         this._likes.push(username);
         return `${username} liked ${this.title}!`;
     }
 
     dislike(username) {
         if(!this._likes.includes(username)) {
-            throw new Error( `You can't dislike this story!`);
+            throw new Error(`You can't dislike this story!`);
+        } else {
+            let index = this._likes.indexOf(username);
+            this._likes.splice(index, 1);
+            return `${username} disliked ${this.title}`;
         }
-
-        this._likes = this._likes.filter(u => u !== username);
-        return `${username} disliked ${this.title}!`;
     }
 
     comment(username, content, id) {
-        let comment = {
-            Id: id,
-            Username: username,
-            Content: content,
-            Replies: [],
-        };
- 
-        let commentWithId = this._comments.find(c => c.Id === id);
- 
-        if (commentWithId) {
-            let replyID = Number(commentWithId.Id + '.' + (commentWithId.Replies.length + 1));
-            let reply = {
-                Id: replyID,
-                Username: username,
-                Content: content,
-            };
- 
-            commentWithId.Replies.push(reply);
- 
-            return 'You replied successfully';
+        let isFound = false;
+        let indexOfComment = -1;
+        for(let comment of this._comments) {
+            indexOfComment++;
+            if(id === comment.id) {
+                isFound = true;
+                break;
+            }
         }
- 
-        comment.Id = this._comments.length + 1;
-        this._comments.push(comment);
- 
-        return `${username} commented on ${this.title}`;
+        
+        if (id == undefined || !isFound) {
+
+            if (id == undefined) {
+                id = this._comments.length + 1;
+            }
+
+            this._comments.push({
+                Id: id,
+                Username: username,
+                Content: content,               
+                Replies: []
+            });
+            return `${username} commented on ${this.title}`;
+        }
+
+        if(isFound) {
+            let comment = this._comments[indexOfComment];
+            let replies = comment.Replies;
+            replies.push({
+                Id: id + '.' + (replies.length + 1),
+                Username: username,
+                Content: content
+            });
+            return `You replied successfully`;
+        }       
     }
 
-    // comment(username, content, id) {
-    //     if(id === undefined || !this._comments.some(c => c.Id === id)) {
-    //         let newComment = {
-    //             Id: this._comments.length + 1,
-    //             Username: username,
-    //             Content: content,
-    //             Replies: []
-    //         };
-    //         this._comments.push(newComment);
-    //         return `${username} commented on ${this.title}`;
-    //     }
-
-    //     let commentToReplyTo = this._comments.find(c => c.Id === id);
-    //     let replyNextId = commentToReplyTo.Replies.length + 1;
-    //     let replyId = Number(commentToReplyTo.Id + '.' + replyNextId);
-    //     let reply = {
-    //         Id: replyId,
-    //         Username: username,
-    //         Content: content
-    //     }
-    //     commentToReplyTo.Replies.push(reply);
-    //     return `You replied successfully`;
-    // }
-
     toString(sortingType) {
-         const sortVersion = {
-             asc: (a, b) => a.Id - b.Id,
-             desc: (a, b) => b.Id - a.Id,
-             username: (a, b) => a.Username.localeCompare(b.Username)
+        let result = `Title: ${this.title}\n`;
+        result += `Creator: ${this.creator}\n`;
+        result += `Likes: ${this._likes.length}\n`;
+
+        if(sortingType === 'asc') {
+            this._comments.sort((a, b) => a.Id - b.Id);
+        } else if(sortingType === 'desc') {
+            this._comments.sort((a, b) => b.Id - a.Id);
+        } else if(sortingType === 'username') {
+            this._comments.sort((a, b) => a.Username.localeCompare(b.Username));
         }
 
-        let comments = this._comments.sort(sortVersion[sortingType]);
-        comments.forEach(c => c.Replies.sort(sortVersion[sortingType]));
-
-        let commentsStringArr = [];
-        for(const comment of comments) {
-            let commentsString = `-- ${comment.Id}. ${comment.Username}: ${comment.Content}`;
-            let repliesString = comment.Replies
-            .map(r => `--- ${r.Id}. ${r.Username}: ${r.Content}`)
-            .join('\n');
-            repliesString = comment.Replies.length > 0
-            ? `\n${repliesString}` : '';
-            let combinedString = `${commentsString}${repliesString}`;
-            commentsStringArr.push(combinedString);
+        for(let comment of this._comments) {
+            if(comment.Replies.length <= 1) {
+                continue;
+            }
+            if(sortingType === 'asc') {
+                comment.Replies.sort((a, b) => a.Id - b.Id);
+            } else if(sortingType === 'desc') {
+                comment.Replies.sort((a, b) => b.Id - a.Id);
+            } else if(sortingType === 'username') {
+                comment.Replies.sort((a, b) => a.Username.localeCompare(b.Username));
+            }
         }
 
-        let fullCommentsString = commentsStringArr.join('\n');
+        result += `Comments:`;
+        for(let comment of this._comments) {
+            result += `\n-- ${comment.Id}. ${comment.Username}: ${comment.Content}`;
+            for(let reply of comment.Replies) {
+                result += `\n--- ${reply.Id}. ${reply.Username}: ${reply.Content}`;
+            }
+        }
 
-        return `Title: ${this.title}
-Creator: ${this.creator}
-Likes: ${this._likes.length}
-Comments: 
-${fullCommentsString}`
-
+        return result;
     }
 }
 
-let art = new Story('My Story', 'Anny');
-art.like('John');
+let art = new Story("My Story", "Anny");
+art.like("John");
 console.log(art.likes);
-art.dislike('John');
+art.dislike("John");
 console.log(art.likes);
-art.comment('Sammy', 'Some Content');
-console.log(art.comment('Ammy', 'New Content'));
-art.comment('Zane', 'Reply', 1);
-art.comment('Jessy', 'Nice :)');
-console.log(art.comment('SAmmy', 'Reply@', 1));
+art.comment("Sammy", "Some Content");
+console.log(art.comment("Ammy", "New Content"));
+art.comment("Zane", "Reply", 1);
+art.comment("Jessy", "Nice :)");
+console.log(art.comment("SAmmy", "Reply@", 1));
 console.log()
 console.log(art.toString('username'));
 console.log()
-art.like('Zane');
+art.like("Zane");
 console.log(art.toString('desc'));
