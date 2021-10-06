@@ -1,4 +1,6 @@
-const { assert } = require("chai");
+const {
+    assert
+} = require("chai");
 
 const numberOperations = {
     powNumber: function (num) {
@@ -34,36 +36,37 @@ const numberOperations = {
     }
 };
 
-describe('numberOperations', function() {
-    describe('powNumber', function() {
-        it('should power a number', function() {
+describe('numberOperations', function () {
+    describe('powNumber', function () {
+        it('should power a number', function () {
             assert.strictEqual(numberOperations.powNumber(10), 100);
             assert.isNaN(numberOperations.powNumber(NaN));
         });
-     });
+    });
 
-     describe('numberChecker', function() {
-        it('should confirm the input is a number', function() {
+    describe('numberChecker', function () {
+        it('should confirm the input is a number', function () {
             assert.throw(() => numberOperations.numberChecker('abc'), Error, 'The input is not a number!');
         });
-        it('should confirm the input is a number less than 100', function() {
+        it('should confirm the input is a number less than 100', function () {
             assert.strictEqual(numberOperations.numberChecker(64), 'The number is lower than 100!');
         });
-        it('should confirm the input is a number greater or equal to 100', function() {
+        it('should confirm the input is a number greater or equal to 100', function () {
             assert.strictEqual(numberOperations.numberChecker(110), 'The number is greater or equal to 100!');
         });
     });
 
-    describe('sumArrays', function() {
-        it('should sum the index values ot two arrays', function() {
+    describe('sumArrays', function () {
+        it('should sum the index values ot two arrays', function () {
             assert.deepEqual(numberOperations.sumArrays([1, 2, 3], [4, 5, 6]), [5, 7, 9]);
             assert.deepEqual(numberOperations.sumArrays([1, 2, 3, 4], [4, 5, 6]), [5, 7, 9, 4]);
         });
-        it('Should return empty array when called with empty arrays', function() {
+        it('Should return empty array when called with empty arrays', function () {
             assert.deepEqual(numberOperations.sumArrays([], []), []);
         });
-        it('Should return correct result when one parameter is an empty array', function() {
+        it('Should return correct result when one parameter is an empty array', function () {
             assert.deepEqual(numberOperations.sumArrays([1, 2, 3], []), [1, 2, 3]);
-     });
-     
+        });
+    });
+
 });

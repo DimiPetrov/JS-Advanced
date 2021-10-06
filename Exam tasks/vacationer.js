@@ -12,7 +12,7 @@ class Vacationer {
  
         this.creditCard = { cardNumber: creditCard[0], expirationDate: creditCard[1], securityNumber: creditCard[2] };
         this.wishList = [];
-        this.idNumber = this.generateIDNumber()
+        this.idNumber = this.generateIDNumber();
     }
  
     get fullName() {
