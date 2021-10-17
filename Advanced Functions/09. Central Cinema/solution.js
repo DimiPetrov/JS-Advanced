@@ -69,7 +69,7 @@ function solve() {
                 document.querySelector('#archive ul').innerHTML = '';
             });
         });
-    })
+    });
 
 }
 

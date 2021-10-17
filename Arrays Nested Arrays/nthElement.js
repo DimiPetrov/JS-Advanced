@@ -1,15 +1,5 @@
-const solve = (arr, n) => {
-    // let array = [];
-    // for(let i = 0; i < arr.length; i += n) {
-    //     array.push(arr[i]);
-    // }
-
-   return arr.filter((el, i) => i % n === 0);
-
-    // function predicate(el, i) {
-    //     return i % n === 0;
-    // }
-    // return arr.filter(predicate);
+function solve(arr, n) {
+    return arr.filter((el, i) => i % n === 0);
 }
 
 console.log(solve(['5',
