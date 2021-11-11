@@ -21,12 +21,35 @@ body {
     transform: translate(-50%);
 }
 
+.play-screen {
+    width: 100%;
+    height: 100%;
+}
+
+.score-screen {
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
 .wizard {
     position: absolute;
     background-image: url('./images/wizard.png');
     background-size: cover;
     width: 82px;
     height: 100px;
+}
+
+.bug {
+    position: absolute;
+    background-image: url('/images/bug.png');
+    background-size: cover;
+}
+
+.fireball {
+    position: absolute;
+    background-image: url('/images/fire-ball.png');
+    background-size: cover;
 }
 
 .hidden {
